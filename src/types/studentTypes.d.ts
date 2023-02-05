@@ -1,5 +1,5 @@
 type CourseGrades = {
-  assingmentWeights: array<CourseGrade>;
+  assignmentWeights: array<CourseGrade>;
   finalExamWeight: number;
 };
 
@@ -20,7 +20,7 @@ type NewStudentRequest = {
   weights: CourseGrades;
 };
 
-type StudentManager = Record<string, Studetn>;
+type StudentManager = Record<string, Student>;
 
 type AssignmentGrade = {
   grade: number;

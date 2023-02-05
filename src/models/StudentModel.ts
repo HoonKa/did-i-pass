@@ -1,6 +1,21 @@
-// calculateAverage()
+const students: StudentManager = {};
 
-function calculateAverage(weights: CourseGrades): number {}
+function getStudentData(): StudentManager {
+  return students;
+}
+
+function calculateAverages(weights: CourseGrades): number {
+  let subtotal = 0;
+  let size = 0;
+
+  for (const grades of weights.assignmentWeights) {
+    subtotal += grades.weight;
+    size += 1;
+  }
+
+  const average = subtotal / size;
+  return average / size;
+}
 
 // addStudent()
 function addStudent(newStudentData: NewStudentRequest): boolean {
@@ -15,7 +30,9 @@ function addStudent(newStudentData: NewStudentRequest): boolean {
 
   // Calculate the student's current average (use the function previously defined)
   const currentAverage = calculateAverages(weights);
-  const newStudent: Student = { name, weights, currentAverage }; // Create a `Student` object using the `name`, `weights` and `currentAverage`
+
+  // Create a `Student` object using the `name`, `weights` and `currentAverage`
+  const newStudent: Student = { name, weights, currentAverage };
 
   // Add the new Student to the `students` object. The student's name is the key
   students[name] = newStudent;
@@ -26,8 +43,15 @@ function addStudent(newStudentData: NewStudentRequest): boolean {
 
 function getStudent(studentName: string): Student | undefined {
   // If the student's name is not in `students`
-  // then return undefined
+  const Name = students[studentName];
+
+  if (!Name) {
+    // then return undefined
+    return undefined;
+  }
+
   // Return the student's information (their name is the key for `students`)
+  return Name;
 }
 
-export { students, addStudent, getStudent };
+export { students, getStudentData, addStudent, getStudent };
