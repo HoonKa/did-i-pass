@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getStudentData, addStudent } from '../models/StudentModel';
+import { getStudentData, addStudent, getStudent } from '../models/StudentModel';
 
 // import { students, addStudent, getStudent } from '../models/StudentsModel';
 
@@ -14,8 +14,8 @@ function getAllStudents(req: Request, res: Response): void {
 // }
 
 function createNewStudent(req: Request, res: Response): void {
-  // console.log(`\nPOST /api/Students`);
-  // console.log(req.body);
+  console.log(`\nPOST /api/Students`);
+  console.log(req.body);
 
   // const studentData = // Assign `req.body` as a `NewStudentRequest`
   const studentData = req.body as NewStudentRequest;
@@ -35,6 +35,7 @@ function createNewStudent(req: Request, res: Response): void {
   for (const grade of studentData.weights.assignmentWeights) {
     subtotal += grade.weight;
   }
+  subtotal += studentData.weights.finalExamWeight;
 
   if (subtotal !== 100) {
     res.sendStatus(400);
@@ -50,7 +51,14 @@ function createNewStudent(req: Request, res: Response): void {
 function getStudentByName(req: Request, res: Response): void {
   console.log(`\nGET /api/students/:studentName`);
   console.log(req.params);
+  const { studentName } = req.params as StudentNameParams;
+  const student = getStudent(studentName);
 
+  if (!student) {
+    res.sendStatus(404);
+    return;
+  }
+  // The stuedent did exist
   res.sendStatus(501);
 }
 

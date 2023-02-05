@@ -37,3 +37,7 @@ type FinalExamScores = {
   neededForC: number;
   neededForD: number;
 };
+
+type StudentNameParams = {
+  studentName: string;
+};
