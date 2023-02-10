@@ -6,15 +6,12 @@ function getStudentData(): StudentManager {
 
 function calculateAverages(weights: CourseGrades): number {
   let subtotal = 0;
-  let size = 0;
 
-  for (const grades of weights.assignmentWeights) {
-    subtotal += grades.weight;
-    size += 1;
+  for (const grade of weights.assignmentWeights) {
+    subtotal += (grade.grade * grade.weight) / (100 - weights.finalExamWeight);
   }
 
-  const average = subtotal / size;
-  return average / size;
+  return subtotal;
 }
 
 // addStudent()
@@ -53,4 +50,23 @@ function getStudent(studentName: string): Student | undefined {
   return students[studentName];
 }
 
-export { students, getStudentData, addStudent, getStudent };
+function calculateFinalExamScore(
+  currentAverage: number,
+  finalExamWeight: number,
+  targetScore: number
+): number {
+  const remainWeight = 100 - finalExamWeight;
+  const result = (targetScore - currentAverage * remainWeight) / finalExamWeight;
+
+  return result;
+  // TODO: Calculate the final exam score needed to get the targetScore in the class
+}
+
+export {
+  students,
+  getStudentData,
+  addStudent,
+  getStudent,
+  calculateAverages,
+  calculateFinalExamScore,
+};

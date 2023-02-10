@@ -1,17 +1,11 @@
 import { Request, Response } from 'express';
-import { getStudentData, addStudent, getStudent } from '../models/StudentModel';
+import { getStudentData, addStudent, getStudent, calculateAverages } from '../models/StudentModel';
 
 // import { students, addStudent, getStudent } from '../models/StudentsModel';
 
 function getAllStudents(req: Request, res: Response): void {
   res.json(getStudentData());
 }
-
-// function calculateSubtotal(student: Student): number {
-//   let subtotal = 0;
-
-//   for (const)
-// }
 
 function createNewStudent(req: Request, res: Response): void {
   console.log(`\nPOST /api/Students`);
@@ -32,10 +26,14 @@ function createNewStudent(req: Request, res: Response): void {
 
   let subtotal = 0;
 
+  // for (const grade of studentData.weights.assignmentWeights) {
+  //   subtotal += grade.weight;
+  // }
+  // subtotal += studentData.weights.finalExamWeight;
+
   for (const grade of studentData.weights.assignmentWeights) {
-    subtotal += grade.weight;
+    subtotal += (grade.grade * grade.weight) / (100 - studentData.weights.finalExamWeight);
   }
-  subtotal += studentData.weights.finalExamWeight;
 
   if (subtotal !== 100) {
     res.sendStatus(400);
@@ -62,4 +60,30 @@ function getStudentByName(req: Request, res: Response): void {
   res.sendStatus(501);
 }
 
-export default { getAllStudents, createNewStudent, getStudentByName };
+function getFinalExamScores(req: Request, res: Response): void {
+  // TODO: Get the student name from the path params
+  const { studentName } = req.params as StudentNameParams;
+  // TODO: Get the student's data from the dataset
+  const studentData = getStudentData(studentName);
+  // TODO: If the student was not found
+  if (!studentData) {
+    // TODO: responds with status 404 Not Found
+    res.sendStatus(404);
+    // TODO: terminate the function
+    return;
+  }
+  // TODO: Get the current average and weights from the student's data
+  const currentAverage = calculateAverages(studentData);
+  const weights = ;
+  // TODO: Calculate the grade needed on the final to score a 90 in the class (this is the grade needed for an A)
+
+  // TODO: Calculate the grade needed on the final to score a 80 in the class (this is the grade needed for a B)
+
+  // TODO: Calculate the grade needed on the final to score a 70 in the class (this is the grade needed for a C)
+
+  // TODO: Calculate the grade needed on the final to score a 60 in the class (this is the grade needed for a D)
+
+  // TODO: Send a JSON response with an object containing the grades needed for an A through D
+}
+
+export default { getAllStudents, createNewStudent, getStudentByName, getFinalExamScores };
