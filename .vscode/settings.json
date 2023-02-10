@@ -1,11 +1,38 @@
 {
-    "workbench.colorCustomizations": {
-        "editor.selectionHighlightBackground": "#7f71ff93",
-        "editor.selectionHighlightBorder": "#7f71ff93",
-        "editor.wordHighlightBackground": "#19b3be00",
-        "editor.wordHighlightBorder": "#15e7d693",
-        "activityBar.background": "#07351C",
-        "titleBar.activeBackground": "#094A27",
-        "titleBar.activeForeground": "#F1FDF7"
+  "workbench.colorCustomizations": {
+      "editor.selectionHighlightBackground": "#7f71ff93",
+      "editor.selectionHighlightBorder": "#7f71ff93",
+      "editor.wordHighlightBackground": "#19b3be00",
+      "editor.wordHighlightBorder": "#15e7d693",
+      "activityBar.background": "#07351C",
+      "titleBar.activeBackground": "#094A27",
+      "titleBar.activeForeground": "#F1FDF7"
+  },
+
+  "todohighlight.keywords": [
+    {
+      "text": "FIXME",
+      "color": "black",
+      "backgroundColor": "rgba(210, 56, 56, 0.8)",
+      // "isWholeLine": true
+    },
+    {
+      "text": "NOTES",
+      "color": "black",
+      "backgroundColor": "rgba(0, 255, 255, 0.8)",
+      // "isWholeLine": true
+    },
+    {
+      "text": "TODO",
+      "color": "black",
+      "backgroundColor": "rgba(255, 255, 16, 0.8)",
+      // "isWholeLine": true
+    },
+    {
+      "text": "IMPORTANT",
+      "color": "black",
+      "backgroundColor": "rgba(0, 255, 16, 0.8)",
+      // "isWholeLine": true
     }
+  ],
 }
