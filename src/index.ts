@@ -1,9 +1,8 @@
 import express, { Express } from 'express';
-// import chalk from 'chalk';
 import StudentController from './controllers/StudentController';
 
 const app: Express = express();
-const PORT = 8091;
+const PORT = 8080;
 
 // Enable JSON request body parsing
 app.use(express.json()); // register global ware
@@ -17,6 +16,7 @@ app.get(`/api/students/:studentName`, StudentController.getStudentByName);
 // app.get(`/api/students/:studentName`, getStudent);
 
 app.get(`/api/students/:studentName/finalExam`, StudentController.getFinalExamScores);
+
 app.post(`/api/students/:studentName/finalExam`, StudentController.calcFinalScore);
 
 // app.get(`/api/students/:studentName/grades/:assignmentName`, StudentController.updateGrade);

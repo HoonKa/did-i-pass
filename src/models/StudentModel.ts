@@ -50,16 +50,17 @@ function getStudent(studentName: string): Student | undefined {
   return students[studentName];
 }
 
-// TODO: Calculate the final exam score needed to get the targetScore in the class
+// Calculate the final exam score needed to get the targetScore in the class
 function calculateFinalExamScore(
   currentAverage: number,
   finalExamWeight: number,
   targetScore: number
 ): number {
-  const currentWeight = 100 - finalExamWeight;
-  const finalScore = (targetScore - currentWeight * currentAverage) / finalExamWeight;
-  Math.floor((finalScore * 100) / 100);
-  return finalScore;
+  const maxWeight = 100 - finalExamWeight;
+  const currentWeight = maxWeight * (currentAverage / 100);
+  const finalScore = ((targetScore - currentWeight) / finalExamWeight) * 100;
+  // Math.floor((finalScore * 100) / 100);
+  return Math.floor(finalScore * 100) / 100;
 }
 
 function getLetterGrade(score: number): string {

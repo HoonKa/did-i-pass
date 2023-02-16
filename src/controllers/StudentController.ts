@@ -33,10 +33,15 @@ function createNewStudent(req: Request, res: Response): void {
 
   let subtotal = 0;
   for (const grade of studentData.weights.assignmentWeights) {
-    subtotal += (grade.grade * grade.weight) / (100 - studentData.weights.finalExamWeight);
+    subtotal += grade.weight;
   }
+  const total = subtotal + studentData.weights.finalExamWeight;
+  // let subtotal = 0;
+  // for (const grade of studentData.weights.assignmentWeights) {
+  //   subtotal += (grade.grade * grade.weight) / (100 - studentData.weights.finalExamWeight);
+  // }
 
-  if (subtotal !== 100) {
+  if (total !== 100) {
     res.sendStatus(400);
     return;
   }
@@ -58,35 +63,35 @@ function getStudentByName(req: Request, res: Response): void {
     return;
   }
   // The stuedent did exist
-  res.sendStatus(501);
+  res.json(student);
 }
 
 function getFinalExamScores(req: Request, res: Response): void {
-  // TODO: Get the student name from the path params
+  //   Get the student name from the path params
   const { studentName } = req.params as StudentNameParams;
-  // TODO: Get the student's data from the dataset
+  //   Get the student's data from the dataset
   const studentData = getStudent(studentName);
 
-  // TODO: If the student was not found
+  //   If the student was not found
   if (!studentData) {
-    // TODO: responds with status 404 Not Found
+    //   responds with status 404 Not Found
     res.sendStatus(404);
-    // TODO: terminate the function
+    //   terminate the function
     return;
   }
 
-  // TODO: Get the current average and weights from the student's data
+  //   Get the current average and weights from the student's data
   const { currentAverage } = studentData;
   const { weights } = studentData;
   const { finalExamWeight } = weights;
 
-  // TODO: Calculate the grade needed on the final to score a 90 in the class (this is the grade needed for an A)
+  //   Calculate the grade needed on the final to score a 90 in the class (this is the grade needed for an A)
   const gradeNeededForA = calculateFinalExamScore(currentAverage, finalExamWeight, 90);
-  // TODO: Calculate the grade needed on the final to score a 80 in the class (this is the grade needed for a B)
+  //   Calculate the grade needed on the final to score a 80 in the class (this is the grade needed for a B)
   const gradeNeededForB = calculateFinalExamScore(currentAverage, finalExamWeight, 80);
-  // TODO: Calculate the grade needed on the final to score a 70 in the class (this is the grade needed for a C)
+  //   Calculate the grade needed on the final to score a 70 in the class (this is the grade needed for a C)
   const gradeNeededForC = calculateFinalExamScore(currentAverage, finalExamWeight, 70);
-  // TODO: Calculate the grade needed on the final to score a 60 in the class (this is the grade needed for a D)
+  //   Calculate the grade needed on the final to score a 60 in the class (this is the grade needed for a D)
   const gradeNeededForD = calculateFinalExamScore(currentAverage, finalExamWeight, 60);
 
   const finalExamScores: FinalExamScores = {
@@ -95,57 +100,60 @@ function getFinalExamScores(req: Request, res: Response): void {
     neededForC: gradeNeededForC,
     neededForD: gradeNeededForD,
   };
-  // TODO: Send a JSON response with an object containing the grades needed for an A through D
+  //   Send a JSON response with an object containing the grades needed for an A through D
   res.json(finalExamScores);
 }
 
 function calcFinalScore(req: Request, res: Response): void {
-  // TODO: Get the student name from the path params
+  //   Get the student name from the path params
   const { studentName } = req.params as StudentNameParams;
-  // TODO: Get the student's data from the datase
+  //   Get the student's data from the datase
   const studentData = getStudent(studentName);
 
-  // TODO: If the student was not found
+  //   If the student was not found
   if (!studentData) {
-    // TODO: responds with status 404 Not Found
+    //   responds with status 404 Not Found
     res.sendStatus(404);
-    // TODO: terminate the function
+    //   terminate the function
     return;
   }
-  // TODO: Get the grade data from the request body as the `AssignmentGrade` type
+  //   Get the grade data from the request body as the `AssignmentGrade` type
   const { grade } = req.body as AssignmentGrade;
-  // TODO: Get the current average and weights from the student's data
-  const { currentAverage } = studentData;
-  const { weights } = studentData;
-  const { finalExamWeight } = weights;
+  //   Get the current average and weights from the student's data
+  // const currentavg = currentAverage.Student;
+  const currentavg = studentData.currentAverage;
+  // const weight = studentData.weights;
+  const finaWeight = studentData.weights.finalExamWeight;
 
-  // TODO: Calculate the final score that would receive using
+  //   Calculate the final score that would receive using
   // their current average and the hypothetical final exam grade.
-  const finalExamScore = calculateFinalExamScore(currentAverage, finalExamWeight, grade);
-  const overallScore =
-    (currentAverage * (100 - finalExamWeight)) / 100 + finalExamScore * (finalExamWeight / 100);
-  // TODO: Get the letter grade they would receive given this score
+  const overallScore = (currentavg * (100 - finaWeight) + grade * finaWeight) / 100;
+
+  // const finalExamScore = calculateFinalExamScore(currentAverage, finalExamWeight, grade);
+  // const overallScore = currentAverage + finalExamScore;
+  // (currentAverage * (100 - finalExamWeight)) / 100 + (finalExamScore * finalExamWeight) / 100;
+  //   Get the letter grade they would receive given this score
   const letterGrade = getLetterGrade(overallScore);
 
-  // TODO: Send back a JSON response containing their `overallScore` and `letterGrade.
+  //   Send back a JSON response containing their `overallScore` and `letterGrade.
   res.json({ overallScore, letterGrade });
 }
 function updateGrade(req: Request, res: Response): void {
-  // TODO: Get the student's name and assignment name from the path parameters as a `GradeUpdateParams`
+  //   Get the student's name and assignment name from the path parameters as a `GradeUpdateParams`
   const { studentName, assignmentName } = req.params as GradeUpdateParams;
-  // TODO: Get the grade from the request body as an `AssignmentGrade`
+  //   Get the grade from the request body as an `AssignmentGrade`
   const { grade } = req.body as AssignmentGrade;
-  // TODO: Update the student's grade
+  //   Update the student's grade
   const update = updateStudentGrade(studentName, assignmentName, grade);
-  // TODO: If the update did not complete (this means the student or the assignment wasn't found)
+  //   If the update did not complete (this means the student or the assignment wasn't found)
   if (!update) {
-    // TODO: respond with status 404 Not Found
+    //   respond with status 404 Not Found
     res.sendStatus(404);
-    // TODO: terminate the function immediately
+    //   terminate the function immediately
     return;
   }
 
-  // TODO: Respond with status 200 OK
+  //   Respond with status 200 OK
   res.sendStatus(200);
 }
 
