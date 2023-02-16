@@ -55,10 +55,19 @@ function calculateFinalExamScore(
   finalExamWeight: number,
   targetScore: number
 ): number {
-  const remainWeight = 100 - finalExamWeight;
-  const result = (targetScore - currentAverage * remainWeight) / finalExamWeight;
+  const currentWeight = 100 - finalExamWeight;
+  // const finalScore =
+  //   (targetScore * (currentAverage + finalExamWeight) - currentAverage * currentWeight) /
+  //   finalExamWeight;
 
-  return result;
+  // ((currentWeight + finalExamWeight) * targetScore - currentWeight * currentAverage) /
+  // finalExamWeight;
+  // (100 * targetScore - currentWeight * currentAverage) / finalExamWeight;
+  // finalScore = ((target-((100-finalExamWeight) / 100 * currentAverage)) / finalExamWeight) * 100;
+  // math.floor(finalScore * 100) / 100
+  const finalScore = (targetScore - currentWeight * currentAverage) / finalExamWeight;
+  Math.floor((finalScore * 100) / 100);
+  return finalScore;
   // TODO: Calculate the final exam score needed to get the targetScore in the class
 }
 

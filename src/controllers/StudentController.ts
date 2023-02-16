@@ -74,14 +74,33 @@ function getFinalExamScores(req: Request, res: Response): void {
   }
   // TODO: Get the current average and weights from the student's data
   const currentAverage = calculateAverages(studentData);
-  const weights = ;
-  // TODO: Calculate the grade needed on the final to score a 90 in the class (this is the grade needed for an A)
+  const weights = 0;
+  let grade: string;
 
+  // TODO: Calculate the grade needed on the final to score a 90 in the class (this is the grade needed for an A)
+  if (currentAverage >= 90) {
+    grade = 'A';
+    console.log(`The grade is ${grade}.`);
+  }
   // TODO: Calculate the grade needed on the final to score a 80 in the class (this is the grade needed for a B)
+  else if (currentAverage >= 80 && currentAverage < 90) {
+    grade = 'B';
+    console.log(`The grade is ${grade}.`);
+  }
 
   // TODO: Calculate the grade needed on the final to score a 70 in the class (this is the grade needed for a C)
-
+  else if (currentAverage >= 70 && currentAverage < 80) {
+    grade = 'C';
+    console.log(`The grade is ${grade}.`);
+  }
   // TODO: Calculate the grade needed on the final to score a 60 in the class (this is the grade needed for a D)
+  else if (currentAverage < 70) {
+    grade = 'D';
+    console.log(`The grade is ${grade}.`);
+  } else {
+    grade = 'F';
+    console.log(`The grade is ${grade}.`);
+  }
 
   // TODO: Send a JSON response with an object containing the grades needed for an A through D
 }
