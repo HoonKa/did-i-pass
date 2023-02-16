@@ -50,25 +50,63 @@ function getStudent(studentName: string): Student | undefined {
   return students[studentName];
 }
 
+// TODO: Calculate the final exam score needed to get the targetScore in the class
 function calculateFinalExamScore(
   currentAverage: number,
   finalExamWeight: number,
   targetScore: number
 ): number {
   const currentWeight = 100 - finalExamWeight;
-  // const finalScore =
-  //   (targetScore * (currentAverage + finalExamWeight) - currentAverage * currentWeight) /
-  //   finalExamWeight;
-
-  // ((currentWeight + finalExamWeight) * targetScore - currentWeight * currentAverage) /
-  // finalExamWeight;
-  // (100 * targetScore - currentWeight * currentAverage) / finalExamWeight;
-  // finalScore = ((target-((100-finalExamWeight) / 100 * currentAverage)) / finalExamWeight) * 100;
-  // math.floor(finalScore * 100) / 100
   const finalScore = (targetScore - currentWeight * currentAverage) / finalExamWeight;
   Math.floor((finalScore * 100) / 100);
   return finalScore;
-  // TODO: Calculate the final exam score needed to get the targetScore in the class
+}
+
+function getLetterGrade(score: number): string {
+  let grade: string = '';
+  if (score >= 90) {
+    grade = 'A';
+  } else if (score >= 80) {
+    grade = 'B';
+  } else if (score >= 70) {
+    grade = 'C';
+  } else if (score >= 60) {
+    grade = 'D';
+  } else {
+    grade = 'F';
+  }
+  return grade;
+}
+
+function updateStudentGrade(
+  studentName: string,
+  assignmentName: string,
+  newGrade: number
+): boolean {
+  // TODO: Get the student's data from the dataset
+  const studentData = getStudent(studentName);
+  // TODO: If the student was not found
+  if (!studentData) {
+    // TODO: return false
+    return false;
+  }
+  // TODO: Search the student's `assignmentWeights` and find the assignment with the matching name using the .find() method
+  const assignment = studentData.weights.assignmentWeights.find(
+    ({ name }) => name === assignmentName
+  );
+
+  // TODO: If the assignment was not found
+  if (!assignment) {
+    // TODO: return false
+    return false;
+  }
+
+  // TODO: Set the assignment's grade to the newGrade
+  assignment.grade = newGrade;
+  // TODO: Then recalculate the student's currentAverage
+  studentData.currentAverage = calculateAverages(studentData.weights);
+  // TODO: return true since the update completed successfully
+  return true;
 }
 
 export {
@@ -76,6 +114,7 @@ export {
   getStudentData,
   addStudent,
   getStudent,
-  calculateAverages,
   calculateFinalExamScore,
+  getLetterGrade,
+  updateStudentGrade,
 };
